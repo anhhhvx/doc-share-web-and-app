@@ -399,24 +399,28 @@ SafeAreaView (Root Container bảo vệ vùng hiển thị an toàn trên tai th
 4. Truy cập vào bảng điều khiển Admin: `http://localhost:3000/admin` (Đăng nhập tài khoản seed mặc định: **admin** / mật khẩu: **123456**).
 
 ### 3. Khởi chạy Ứng dụng di động (Mobile App)
-1. Xác định địa chỉ IPv4 cục bộ của máy tính của bạn (Dùng lệnh `ipconfig` trên Windows hoặc `ifconfig` trên macOS/Linux). Ví dụ: `192.168.1.50`.
-2. Mở tệp `doc-share-app/config.js`, cập nhật địa chỉ IP tương ứng:
+1. **Thiết lập mạng và Tường lửa (Bắt buộc để kết nối thành công)**:
+   * **Khuyến khích**: Nên sử dụng mạng Wi-Fi phát ra từ điện thoại (**Mobile Hotspot**) để kết nối giữa điện thoại và máy tính được mượt mà nhất, tránh các vấn đề chặn kết nối chéo của các cục Wi-Fi chung.
+   * Đảm bảo cả máy tính và điện thoại kết nối **chung một mạng Wi-Fi** (Tắt 3G/4G trên điện thoại nếu bắt Wi-Fi ngoài và tắt VPN trên điện thoại).
+   * Khuyến khích chuyển trạng thái mạng Wi-Fi trên máy tính Windows sang **Private Network**.
+   * Nếu điện thoại bị chặn kết nối (báo lỗi Timeout, màn hình xoay trắng liên tục), hãy mở **PowerShell (Run as administrator)** trên máy tính và chạy lệnh sau để mở khóa tường lửa cho cổng 3000:
+     ```powershell
+     New-NetFirewallRule -DisplayName "Allow Port 3000" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
+     ```
+2. **Xác định địa chỉ IPv4 cục bộ** của máy tính (Dùng lệnh `ipconfig` trên Windows). Hãy kiểm tra xem địa chỉ IP Wi-Fi của máy tính có bắt đầu bằng đầu số **`10.`** hay không (đặc trưng khi kết nối với Hotspot điện thoại, ví dụ: `10.231.114.78`).
+3. **Cập nhật địa chỉ IP vào ứng dụng**: Mở tệp `doc-share-app/config.js` và cập nhật địa chỉ IP tương ứng:
    ```javascript
-   export const API_BASE_URL = 'http://192.168.1.50:3000';
+   export const API_BASE_URL = 'http://10.231.114.78:3000';
    ```
-3. Mở terminal tại thư mục `doc-share-app` và cài đặt dependencies:
-   ```bash
-   npm install
-   ```
-4. Khởi động môi trường Expo bằng lệnh:
-   ```bash
-   npm start
-   ```
-   hoặc:
-   ```bash
-   npx expo start
-   ```
-5. Trải nghiệm trên thiết bị:
-   * **Điện thoại thật**: Tải ứng dụng **Expo Go** từ Google Play Store (Android) hoặc App Store (iOS). Quét mã QR hiển thị ở terminal để tải ứng dụng trực tiếp lên điện thoại. (Lưu ý: Điện thoại và máy tính chạy server phải kết nối chung một mạng Wi-Fi).
-   * **Máy ảo**: Nhấn phím `a` trên terminal để khởi chạy máy ảo Android (nếu có Android Studio), hoặc phím `i` để chạy giả lập iOS Simulator (trên macOS).
-
+4. **Khởi chạy ứng dụng**:
+   * Mở terminal tại thư mục `doc-share-app` và cài đặt thư viện:
+     ```bash
+     npm install
+     ```
+   * Khởi động môi trường Expo bằng lệnh:
+     ```bash
+     npx expo start
+     ```
+5. **Trải nghiệm trên thiết bị**:
+   * **Điện thoại thật**: Tải ứng dụng **Expo Go** trên App Store (iOS) hoặc Google Play (Android). Quét mã QR hiển thị ở terminal để tải ứng dụng trực tiếp lên điện thoại.
+   * **Máy ảo**: Nhấn phím `a` trên terminal để khởi chạy máy ảo Android, hoặc phím `i` để chạy giả lập iOS Simulator (trên macOS).
