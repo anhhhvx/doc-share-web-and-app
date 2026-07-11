@@ -1,43 +1,66 @@
-/**
- * Quản lý hoạt động hiển thị Popup Quảng cáo (Ad Promotion Popup).
- * Popup này hiển thị sau 1 phút nếu người dùng chưa tắt nó lần nào (kiểm tra qua Cookie).
- */
+// Quản lý popup quảng cáo trên trang chủ
+
 const promoPopup = document.getElementById('promoPopup');
 const closePromoPopup = document.getElementById('closePromoPopup');
-const popupCookieName = 'docshare_promo_closed';
 
-/**
- * Hàm lấy giá trị của Cookie theo tên.
- */
+const POPUP_COOKIE_NAME = 'docshare_promo_closed';
+const POPUP_DELAY_MS = 60 * 1000;
+
+// Cookie tồn tại trong 5 phút để phục vụ kiểm thử
+// Trong thực tế, có thể đặt thời gian tồn tại lâu hơn, ví dụ 1 ngày (24 * 60 * 60 giây)
+const COOKIE_MAX_AGE_SECONDS = 5 * 60;
+
+// Lấy giá trị cookie theo tên
 function getCookie(name) {
-    const cookies = document.cookie.split(';').map((item) => item.trim());
-    const target = cookies.find((item) => item.startsWith(`${name}=`));
-    return target ? decodeURIComponent(target.split('=').slice(1).join('=')) : '';
+    const cookiePrefix = `${name}=`;
+    const targetCookie = document.cookie
+        .split(';')
+        .map((item) => item.trim())
+        .find((item) => item.startsWith(cookiePrefix));
+    if (!targetCookie) {
+        return '';
+    }
+    return decodeURIComponent(targetCookie.slice(cookiePrefix.length));
 }
 
-/**
- * Hàm lưu giá trị Cookie kèm thời gian hết hạn (tính theo ngày).
- */
-function setCookie(name, value, days) {
-    const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+// Lưu cookie với thời gian tồn tại tính bằng giây
+function setCookie(name, value, maxAgeSeconds) {
+    document.cookie =
+        `${name}=${encodeURIComponent(value)}; ` +
+        `max-age=${maxAgeSeconds}; ` +
+        'path=/; SameSite=Lax';
 }
 
-// Nếu có thẻ popup trên giao diện và cookie chưa được thiết lập (chưa từng click tắt)
-if (promoPopup && !getCookie(popupCookieName)) {
-    // Kích hoạt hiển thị popup sau đúng 60000ms (1 phút)
+// Hiển thị popup quảng cáo
+function showPromoPopup() {
+    promoPopup.classList.add('active');
+    promoPopup.setAttribute('aria-hidden', 'false');
+}
+
+// Ẩn popup và lưu cookie sau khi người dùng nhấn đóng
+function hidePromoPopup() {
+    promoPopup.classList.remove('active');
+    promoPopup.setAttribute('aria-hidden', 'true');
+
+    setCookie(POPUP_COOKIE_NAME,'1',COOKIE_MAX_AGE_SECONDS);
+}
+
+// Chỉ đặt bộ đếm khi trang có popup và cookie chưa tồn tại
+if (promoPopup && !getCookie(POPUP_COOKIE_NAME)) {
     window.setTimeout(() => {
-        promoPopup.classList.add('active');
-        promoPopup.setAttribute('aria-hidden', 'false');
-    }, 60000);
+        // Kiểm tra lại cookie để tránh hiện popup nếu đã đóng ở tab khác
+        if (!getCookie(POPUP_COOKIE_NAME)) {
+            showPromoPopup();
+        }
+    }, POPUP_DELAY_MS);
 }
 
-// Thiết lập sự kiện click cho nút đóng popup (biểu tượng dấu x)
+// Gắn sự kiện đóng popup
 if (promoPopup && closePromoPopup) {
-    closePromoPopup.addEventListener('click', () => {
-        promoPopup.classList.remove('active');
-        promoPopup.setAttribute('aria-hidden', 'true');
-        // Ghi nhận cookie trong vòng 365 ngày để không hiển thị lại popup nữa
-        setCookie(popupCookieName, '1', 365);
-    });
+    closePromoPopup.addEventListener('click', hidePromoPopup);
 }
+
+// Lệnh xóa cookie để test 
+// F12
+// document.cookie = 'docshare_promo_closed=; max-age=0; path=/';
+// Reload trang để test lại popup
