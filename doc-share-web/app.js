@@ -1,7 +1,7 @@
-/**
- * Tệp tin khởi chạy ứng dụng Express (Backend).
- * Cấu hình: Express App, Middlewares, Session, Cổng kết nối,
- * Tải lên tệp tin và toàn bộ các Router giao diện (Web Views) & API (cho Mobile App).
+/*
+ Tệp tin khởi chạy ứng dụng Express (Backend).
+ Cấu hình: Express App, Middlewares, Session, Cổng kết nối,
+ Tải lên tệp tin và toàn bộ các Router giao diện (Web Views) & API (cho Mobile App).
  */
 
 const express = require('express');
@@ -927,11 +927,8 @@ app.get('/logout', (req, res) => {
     });
 });
 
-/**
- * =========================================================================
- * CÁC REST API ENDPOINTS PHỤC VỤ DÀNH CHO MOBILE APP (JSON INTERFACES)
- * =========================================================================
- */
+//---------------Mobile--------------------
+// CÁC REST API ENDPOINTS PHỤC VỤ DÀNH CHO MOBILE APP (JSON INTERFACES)
 
 // Lấy danh sách toàn bộ danh mục tài liệu phục vụ Mobile App
 app.get('/api/categories', async (req, res, next) => {
@@ -1118,11 +1115,7 @@ app.get('/api/site-data', async (req, res, next) => {
     }
 });
 
-/**
- * =========================================================================
- * ERROR HANDLER & START SERVER
- * =========================================================================
- */
+//ERROR HANDLER & START SERVER
 
 // Middleware toàn cục xử lý lỗi 500
 app.use(async (error, req, res, next) => {
@@ -1155,9 +1148,7 @@ app.use(async (error, req, res, next) => {
     });
 });
 
-/**
- * Hàm khởi chạy hệ thống: Kết nối cơ sở dữ liệu MongoDB, nạp seed data mẫu và lắng nghe cổng 3000.
- */
+// Hàm khởi chạy hệ thống: Kết nối cơ sở dữ liệu MongoDB, nạp seed data mẫu và lắng nghe cổng 3000.
 async function startServer() {
     try {
         await connectMongoDB();
