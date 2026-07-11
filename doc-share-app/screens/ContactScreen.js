@@ -88,7 +88,7 @@ export default function ContactScreen({ userSession }) {
         contactText: 'Liên hệ với chúng tôi nếu bạn cần hỗ trợ.',
         contactEmail: 'docs-share@example.com',
         contactPhone: '0123 456 789',
-        contactAddress: 'Khu học tập sinh viên'
+        contactAddress: 'Số 1 Đại Cồ Việt, phường Bạch Mai, Hà Nội'
     };
 
     return (
@@ -114,9 +114,9 @@ export default function ContactScreen({ userSession }) {
                     <Text style={styles.panelText}>{homeContent.contactText}</Text>
 
                     <View style={styles.contactList}>
-                        <Text style={styles.contactItem}>📧 Email: <Text style={styles.bold}>{homeContent.contactEmail}</Text></Text>
-                        <Text style={styles.contactItem}>📞 Điện thoại: <Text style={styles.bold}>{homeContent.contactPhone}</Text></Text>
-                        <Text style={styles.contactItem}>📍 Địa chỉ: <Text style={styles.bold}>{homeContent.contactAddress}</Text></Text>
+                        <Text style={styles.contactItem}> Email: <Text style={styles.bold}>{homeContent.contactEmail}</Text></Text>
+                        <Text style={styles.contactItem}> Điện thoại: <Text style={styles.bold}>{homeContent.contactPhone}</Text></Text>
+                        <Text style={styles.contactItem}> Địa chỉ: <Text style={styles.bold}>{homeContent.contactAddress}</Text></Text>
                     </View>
                 </View>
 
