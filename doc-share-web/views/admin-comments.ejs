@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bình luận</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin-users.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Comments</p>
+                <h1>Danh sách bình luận người dùng</h1>
+                <p class="hero-copy">Xem toàn bộ đánh giá công khai, lọc theo từ khóa/điểm số và xóa các bình luận không phù hợp.</p>
+            </div>
+        </section>
+
+        <div style="margin-bottom: 20px; margin-top: 20px;">
+            <a href="/admin" class="secondary-btn" style="text-decoration: none;">&larr; Quay lại trang quản trị</a>
+        </div>
+
+        <% if (success) { %>
+            <p class="status-message success-message"><%= success %></p>
+        <% } %>
+
+        <!-- Search and Filter Form -->
+        <form class="filter-form" action="/admin/comments" method="GET" style="margin-bottom: 24px;">
+            <input
+                type="text"
+                name="q"
+                value="<%= filters.q %>"
+                placeholder="Tìm tên, email, tài liệu hoặc nội dung..."
+                class="search-box page-search"
+                style="width: 320px;"
+            >
+
+            <select name="rating" class="category-select">
+                <option value="">Tất cả đánh giá</option>
+                <% [5, 4, 3, 2, 1].forEach(r => { %>
+                    <option value="<%= r %>" <%= String(filters.rating) === String(r) ? 'selected' : '' %>><%= r %> sao</option>
+                <% }) %>
+            </select>
+
+            <button type="submit" class="primary-btn">Lọc bình luận</button>
+        </form>
+
+        <!-- Comments Table -->
+        <section class="admin-users-section">
+            <div class="admin-users-header">
+                <div>
+                    <p class="eyebrow">Danh sách bình luận</p>
+                    <h2>Bình luận hiện có</h2>
+                </div>
+
+                <span class="helper-text">
+                    Tổng cộng: <strong><%= comments.length %></strong> bình luận
+                </span>
+            </div>
+
+            <div class="admin-table-wrapper">
+                <% if (comments.length === 0) { %>
+                    <div style="padding: 24px; text-align: center; color: var(--muted);">
+                        Chưa có bình luận nào phù hợp.
+                    </div>
+                <% } else { %>
+                    <table class="admin-users-table">
+                        <thead>
+                            <tr>
+                                <th>Người gửi</th>
+                                <th>Email</th>
+                                <th>Tài liệu</th>
+                                <th>Đánh giá</th>
+                                <th>Nội dung bình luận</th>
+                                <th>Ngày gửi</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% comments.forEach(comment => { %>
+                                <tr>
+                                    <td style="font-weight: bold; white-space: nowrap;">
+                                        <%= comment.name %>
+                                    </td>
+                                    <td style="white-space: nowrap;">
+                                        <%= comment.email %>
+                                    </td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        <%= comment.documentTitle %>
+                                    </td>
+                                    <td style="white-space: nowrap; color: #f59e0b; font-weight: bold;">
+                                        <%= comment.rating %> ★
+                                    </td>
+                                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<%= comment.content %>">
+                                        <%= comment.content %>
+                                    </td>
+                                    <td class="admin-date-cell">
+                                        <%= new Date(comment.createdAt).toLocaleString('vi-VN') %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/comments/<%= comment.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa bình luận này?');" style="margin: 0;">
+                                            <button type="submit" class="danger-btn" style="padding: 8px 12px; font-size: 13px;">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

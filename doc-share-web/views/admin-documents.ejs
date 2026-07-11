@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài liệu</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin-users.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Documents</p>
+                <h1>Phân loại và chỉnh sửa tài liệu</h1>
+                <p class="hero-copy">Admin có thể theo dõi danh sách, lọc theo danh mục, xem chi tiết và xóa tài liệu.</p>
+            </div>
+        </section>
+
+        <div style="margin-bottom: 20px; margin-top: 20px;">
+            <a href="/admin" class="secondary-btn" style="text-decoration: none;">&larr; Quay lại trang quản trị</a>
+        </div>
+
+        <% if (success) { %>
+            <p class="status-message success-message"><%= success %></p>
+        <% } %>
+
+        <!-- Search and Filter Form -->
+        <form class="filter-form" action="/admin/documents" method="GET" style="margin-bottom: 24px;">
+            <input
+                type="text"
+                name="q"
+                value="<%= filters.q %>"
+                placeholder="Nhập từ khóa tài liệu..."
+                class="search-box page-search"
+            >
+
+            <select name="category" class="category-select">
+                <option value="">Tất cả danh mục</option>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>" <%= filters.category === category.id ? 'selected' : '' %>>
+                        <%= category.title %>
+                    </option>
+                <% }) %>
+            </select>
+
+            <button type="submit" class="primary-btn">Lọc tài liệu</button>
+        </form>
+
+        <!-- Document List Table -->
+        <section class="admin-users-section">
+            <div class="admin-users-header">
+                <div>
+                    <p class="eyebrow">Danh sách tài liệu</p>
+                    <h2>Tài liệu hiện có</h2>
+                </div>
+
+                <span class="helper-text">
+                    Tổng cộng: <strong><%= documentItems.length %></strong> tài liệu
+                </span>
+            </div>
+
+            <div class="admin-table-wrapper">
+                <% if (documentItems.length === 0) { %>
+                    <div style="padding: 24px; text-align: center; color: var(--muted);">
+                        Chưa có tài liệu nào phù hợp.
+                    </div>
+                <% } else { %>
+                    <table class="admin-users-table">
+                        <thead>
+                            <tr>
+                                <th>Tên tài liệu</th>
+                                <th>Môn học</th>
+                                <th>Nhóm/Danh mục</th>
+                                <th>Người đăng</th>
+                                <th>Lượt xem</th>
+                                <th>Ngày đăng</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% documentItems.forEach(item => { %>
+                                <tr>
+                                    <td style="font-weight: bold; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        <%= item.title %>
+                                    </td>
+                                    <td>
+                                        <%= item.subject %>
+                                    </td>
+                                    <td>
+                                        <%= item.categoryName %>
+                                    </td>
+                                    <td>
+                                        <%= item.uploader %>
+                                    </td>
+                                    <td>
+                                        <%= item.viewCount || 0 %>
+                                    </td>
+                                    <td class="admin-date-cell">
+                                        <%= new Date(item.createdAt).toLocaleString('vi-VN') %>
+                                    </td>
+                                    <td>
+                                        <div class="admin-table-actions">
+                                            <a href="/admin/documents/<%= item.id %>" class="primary-btn" style="text-decoration: none; padding: 8px 12px; font-size: 13px;">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

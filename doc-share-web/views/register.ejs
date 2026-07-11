@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <form action="/register" method="POST" class="login-form">
+            <h1>Đăng ký</h1>
+
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+
+            <input
+                type="text"
+                name="fullName"
+                placeholder="Họ và tên"
+                value="<%= formData.fullName || '' %>"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value="<%= formData.email || '' %>"
+                required
+            >
+
+            <input
+                type="tel"
+                name="phone"
+                placeholder="Số điện thoại"
+                value="<%= formData.phone || '' %>"
+            >
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Tên đăng nhập"
+                value="<%= formData.username || '' %>"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Mật khẩu"
+                required
+            >
+
+            <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Nhập lại mật khẩu"
+                required
+            >
+
+            <button type="submit">Tạo tài khoản</button>
+
+            <p class="switch-auth">
+                Đã có tài khoản?
+                <a href="/login">Đăng nhập</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

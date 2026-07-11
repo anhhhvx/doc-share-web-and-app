@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật nội dung</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Content</p>
+                <h1>Cập nhật nội dung các trang</h1>
+                <p class="hero-copy">Bạn có thể chỉnh phần giới thiệu, thông tin liên hệ và nội dung popup quảng cáo từ đây.</p>
+            </div>
+        </section>
+
+        <div style="margin-bottom: 20px; margin-top: 20px;">
+            <a href="/admin" class="secondary-btn" style="text-decoration: none;">&larr; Quay lại trang quản trị</a>
+        </div>
+
+        <form action="/admin/content" method="POST" class="upload-form">
+            <% if (success) { %>
+                <p class="status-message success-message"><%= success %></p>
+            <% } %>
+
+            <h2 class="admin-form-title">Nội dung trang chủ</h2>
+            <div class="form-grid">
+                <label>
+                    Tiêu đề hero
+                    <input type="text" name="heroTitle" value="<%= siteData.homeContent.heroTitle %>" required>
+                </label>
+
+                <label>
+                    Email liên hệ
+                    <input type="text" name="contactEmail" value="<%= siteData.homeContent.contactEmail %>" required>
+                </label>
+
+                <label>
+                    Điện thoại liên hệ
+                    <input type="text" name="contactPhone" value="<%= siteData.homeContent.contactPhone %>" required>
+                </label>
+
+                <label>
+                    Địa chỉ liên hệ
+                    <input type="text" name="contactAddress" value="<%= siteData.homeContent.contactAddress %>" required>
+                </label>
+            </div>
+
+            <label>
+                Mô tả hero
+                <textarea name="heroText" rows="4" required><%= siteData.homeContent.heroText %></textarea>
+            </label>
+
+            <div class="form-grid">
+                <label>
+                    Tiêu đề giới thiệu
+                    <input type="text" name="aboutTitle" value="<%= siteData.homeContent.aboutTitle %>" required>
+                </label>
+
+                <label>
+                    Tiêu đề liên hệ
+                    <input type="text" name="contactTitle" value="<%= siteData.homeContent.contactTitle %>" required>
+                </label>
+            </div>
+
+            <label>
+                Nội dung giới thiệu
+                <textarea name="aboutText" rows="4" required><%= siteData.homeContent.aboutText %></textarea>
+            </label>
+
+            <label>
+                Nội dung liên hệ
+                <textarea name="contactText" rows="4" required><%= siteData.homeContent.contactText %></textarea>
+            </label>
+
+            <h2 class="admin-form-title">Popup quảng cáo</h2>
+            <label class="toggle-row">
+                <input type="checkbox" name="adEnabled" <%= siteData.adPopup.enabled ? 'checked' : '' %>>
+                Bật popup quảng cáo sau 1 phút ở trang chủ
+            </label>
+
+            <div class="form-grid">
+                <label>
+                    Tiêu đề popup
+                    <input type="text" name="adTitle" value="<%= siteData.adPopup.title %>" required>
+                </label>
+
+                <label>
+                    Link nút popup
+                    <input type="text" name="adButtonLink" value="<%= siteData.adPopup.buttonLink %>" required>
+                </label>
+
+                <label>
+                    Text nút popup
+                    <input type="text" name="adButtonText" value="<%= siteData.adPopup.buttonText %>" required>
+                </label>
+            </div>
+
+            <label>
+                Nội dung popup
+                <textarea name="adMessage" rows="4" required><%= siteData.adPopup.message %></textarea>
+            </label>
+
+            <button type="submit" class="primary-btn">Lưu thay đổi</button>
+        </form>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

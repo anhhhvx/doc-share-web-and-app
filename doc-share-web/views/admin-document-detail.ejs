@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết tài liệu - Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Documents</p>
+                <h1>Chi tiết tài liệu</h1>
+                <p class="hero-copy">Xem và cập nhật thông tin chi tiết của tài liệu hoặc xóa tài liệu khỏi hệ thống.</p>
+            </div>
+        </section>
+
+        <% if (success) { %>
+            <p class="status-message success-message"><%= success %></p>
+        <% } %>
+
+        <div style="margin-bottom: 20px;">
+            <a href="/admin/documents" class="secondary-btn" style="text-decoration: none;">&larr; Quay lại danh sách</a>
+        </div>
+
+        <section class="admin-document-card" style="padding: 32px; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow);">
+            <form action="/admin/documents/<%= documentItem.id %>/update" method="POST" class="upload-form">
+                <div class="form-grid">
+                    <label>
+                        Tiêu đề
+                        <input type="text" name="title" value="<%= documentItem.title %>" required>
+                    </label>
+
+                    <label>
+                        Môn học / đầu mục
+                        <input type="text" name="subject" value="<%= documentItem.subject %>" required>
+                    </label>
+
+                    <label>
+                        Danh mục
+                        <select name="categoryId" required>
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category.id %>" <%= documentItem.categoryId === category.id ? 'selected' : '' %>>
+                                    <%= category.title %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </label>
+                </div>
+
+                <label style="margin-top: 14px;">
+                    Mô tả ngắn
+                    <textarea name="description" rows="3" required><%= documentItem.description %></textarea>
+                </label>
+
+                <label style="margin-top: 14px;">
+                    Nội dung tài liệu
+                    <textarea name="content" rows="12" required><%= documentItem.content %></textarea>
+                </label>
+
+                <div class="admin-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; flex-wrap: wrap; gap: 16px;">
+                    <button type="submit" class="primary-btn">Lưu cập nhật</button>
+                    <span class="helper-text"><%= documentItem.viewCount || 0 %> lượt xem | Người đăng: <strong><%= documentItem.uploader %></strong> | Ngày đăng: <strong><%= new Date(documentItem.createdAt).toLocaleString('vi-VN') %></strong></span>
+                </div>
+            </form>
+
+            <hr style="border: 0; border-top: 1px solid var(--line); margin: 36px 0;">
+
+            <div style="display: flex; justify-content: flex-end;">
+                <form action="/admin/documents/<%= documentItem.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
+                    <button type="submit" class="danger-btn" style="padding: 12px 24px; background: #ef4444; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Xóa tài liệu</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <%- include('./partials/footer') %>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

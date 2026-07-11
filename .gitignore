@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# Expo
+.expo/
+**/doc-share-app/.expo/
+
+# environment variables
+.env
+**/.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# session files
+sessions/
+**/sessions/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# build/cache
+dist/
+.cache/
+
+# IDE & agents
+.vscode/
+.idea/
+.agents/

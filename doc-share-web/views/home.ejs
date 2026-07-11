@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website chia sẻ tài liệu</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="hero-section">
+            <div class="hero-copy-block">
+                <p class="eyebrow">Nền tảng học tập</p>
+                <h1><%= homeContent.heroTitle %></h1>
+                <p class="hero-copy"><%= homeContent.heroText %></p>
+                <div class="hero-actions">
+                    <a href="/documents" class="primary-btn">Xem tài liệu</a>
+                    <% if (user) { %>
+                        <a href="/upload" class="secondary-btn">Đăng tài liệu</a>
+                    <% } else { %>
+                        <a href="/register" class="secondary-btn">Tạo tài khoản</a>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="hero-panel">
+                <h2>Danh mục nổi bật</h2>
+                <ul class="hero-list">
+                    <% categories.slice(0, 4).forEach(category => { %>
+                        <li>
+                            <strong><%= category.title %></strong>
+                            <span><%= category.subjects.join(', ') %></span>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section-header">
+            <div>
+                <p class="eyebrow">Mới cập nhật</p>
+                <h2>Tài liệu gần đây</h2>
+            </div>
+            <a href="/documents" class="text-link">Xem tất cả</a>
+        </section>
+
+        <section class="document-grid">
+            <% documentItems.forEach(item => { %>
+                <article class="document-card">
+                    <span class="document-tag"><%= item.categoryName %></span>
+                    <h3><%= item.title %></h3>
+                    <p class="document-subject"><%= item.subject %></p>
+                    <p><%= item.description %></p>
+                    <div class="document-meta">
+                        <span><%= item.uploader %></span>
+                        <span><%= item.viewCount || 0 %> lượt xem</span>
+                    </div>
+                    <a href="/documents/<%= item.id %>" class="text-link">Xem chi tiết</a>
+                </article>
+            <% }) %>
+        </section>
+
+    </main>
+
+    <%- include('./partials/footer') %>
+
+    <% if (adPopup && adPopup.enabled) { %>
+        <div id="promoPopup" class="promo-popup" aria-hidden="true">
+            <div class="promo-card">
+                <button type="button" class="promo-close" id="closePromoPopup">×</button>
+                <p class="eyebrow">Quảng cáo</p>
+                <h2><%= adPopup.title %></h2>
+                <p><%= adPopup.message %></p>
+                <a href="<%= adPopup.buttonLink %>" class="primary-btn"><%= adPopup.buttonText %></a>
+            </div>
+        </div>
+    <% } %>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/ad-popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ý kiến liên hệ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin-users.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Contacts</p>
+                <h1>Ý kiến liên hệ</h1>
+                <p class="hero-copy">Xem thông tin người gửi, tìm kiếm từ khóa, nội dung liên hệ và quản lý xóa ý kiến.</p>
+            </div>
+        </section>
+
+        <div style="margin-bottom: 20px; margin-top: 20px;">
+            <a href="/admin" class="secondary-btn" style="text-decoration: none;">&larr; Quay lại trang quản trị</a>
+        </div>
+
+        <% if (success) { %>
+            <p class="status-message success-message"><%= success %></p>
+        <% } %>
+
+        <!-- Search Form -->
+        <form class="filter-form" action="/admin/contacts" method="GET" style="margin-bottom: 24px;">
+            <input
+                type="text"
+                name="q"
+                value="<%= filters.q %>"
+                placeholder="Tìm tên, email hoặc nội dung ý kiến..."
+                class="search-box page-search"
+                style="width: 360px;"
+            >
+
+            <button type="submit" class="primary-btn">Tìm kiếm</button>
+        </form>
+
+        <!-- Contacts Table -->
+        <section class="admin-users-section">
+            <div class="admin-users-header">
+                <div>
+                    <p class="eyebrow">Danh sách ý kiến</p>
+                    <h2>Ý kiến hiện có</h2>
+                </div>
+
+                <span class="helper-text">
+                    Tổng cộng: <strong><%= contacts.length %></strong> ý kiến
+                </span>
+            </div>
+
+            <div class="admin-table-wrapper">
+                <% if (contacts.length === 0) { %>
+                    <div style="padding: 24px; text-align: center; color: var(--muted);">
+                        Chưa có ý kiến liên hệ nào phù hợp.
+                    </div>
+                <% } else { %>
+                    <table class="admin-users-table">
+                        <thead>
+                            <tr>
+                                <th>Người gửi</th>
+                                <th>Email</th>
+                                <th>Nội dung ý kiến</th>
+                                <th>Ngày gửi</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% contacts.forEach(contact => { %>
+                                <tr>
+                                    <td style="font-weight: bold; white-space: nowrap;">
+                                        <%= contact.name %>
+                                    </td>
+                                    <td style="white-space: nowrap;">
+                                        <%= contact.email %>
+                                    </td>
+                                    <td style="max-width: 450px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<%= contact.message %>">
+                                        <%= contact.message %>
+                                    </td>
+                                    <td class="admin-date-cell">
+                                        <%= new Date(contact.createdAt).toLocaleString('vi-VN') %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/contacts/<%= contact.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa ý kiến này?');" style="margin: 0;">
+                                            <button type="submit" class="danger-btn" style="padding: 8px 12px; font-size: 13px;">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

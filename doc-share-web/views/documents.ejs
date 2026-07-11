@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách tài liệu</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero">
+            <div>
+                <p class="eyebrow">Kho tài liệu</p>
+                <h1>Danh sách tài liệu chia sẻ</h1>
+                <p class="hero-copy">Tìm nhanh tài liệu theo từ khóa, môn học hoặc danh mục mà bạn cần.</p>
+            </div>
+        </section>
+
+        <form class="filter-form" action="/documents" method="GET">
+            <input
+                type="text"
+                name="q"
+                value="<%= filters.q %>"
+                placeholder="Nhập từ khóa tài liệu..."
+                class="search-box page-search"
+            >
+
+            <select name="category" class="category-select">
+                <option value="">Tất cả danh mục</option>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>" <%= filters.category === category.id ? 'selected' : '' %>>
+                        <%= category.title %>
+                    </option>
+                <% }) %>
+            </select>
+
+            <button type="submit" class="primary-btn">Lọc tài liệu</button>
+        </form>
+
+        <section class="document-grid">
+            <% if (documentItems.length === 0) { %>
+                <article class="empty-state">
+                    <h2>Chưa có tài liệu phù hợp</h2>
+                    <p>Hãy thử đổi từ khóa hoặc tải thêm tài liệu mới vào hệ thống.</p>
+                </article>
+            <% } %>
+
+            <% documentItems.forEach(item => { %>
+                <article class="document-card">
+                    <span class="document-tag"><%= item.categoryName %></span>
+                    <h2><%= item.title %></h2>
+                    <p class="document-subject"><%= item.subject %></p>
+                    <p><%= item.description %></p>
+                    <div class="document-meta">
+                        <span>Người đăng: <%= item.uploader %></span>
+                        <span><%= new Date(item.createdAt).toLocaleDateString('vi-VN') %></span>
+                    </div>
+                    <a href="/documents/<%= item.id %>" class="text-link">Xem chi tiết</a>
+                </article>
+            <% }) %>
+        </section>
+    </main>
+
+    <%- include('./partials/footer') %>
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

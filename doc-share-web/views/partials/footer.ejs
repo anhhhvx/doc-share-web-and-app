@@ -1,0 +1,114 @@
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <section class="footer-section">
+            <p class="eyebrow">Giới thiệu</p>
+            <h2><%= siteData.homeContent.aboutTitle %></h2>
+
+            <p class="footer-description">
+                <%= siteData.homeContent.aboutText %>
+            </p>
+        </section>
+
+        <section class="footer-contact-grid">
+
+            <div class="footer-contact-info">
+                <p class="eyebrow">Liên hệ</p>
+                <h2><%= siteData.homeContent.contactTitle %></h2>
+
+                <p class="footer-description">
+                    <%= siteData.homeContent.contactText %>
+                </p>
+
+                <ul class="footer-contact-list">
+                    <li>
+                        <span>Email</span>
+                        <a href="mailto:<%= siteData.homeContent.contactEmail %>">
+                            <%= siteData.homeContent.contactEmail %>
+                        </a>
+                    </li>
+
+                    <li>
+                        <span>Điện thoại</span>
+                        <a href="tel:<%= siteData.homeContent.contactPhone %>">
+                            <%= siteData.homeContent.contactPhone %>
+                        </a>
+                    </li>
+
+                    <li>
+                        <span>Địa chỉ</span>
+                        <strong>
+                            <%= siteData.homeContent.contactAddress %>
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-contact-form-block">
+                <p class="eyebrow">Gửi ý kiến</p>
+                <h2>Liên hệ với chúng tôi</h2>
+
+                <form action="/contact" method="POST" class="footer-contact-form">
+
+                    <% if (
+                        typeof contactError !== 'undefined'
+                        && contactError
+                    ) { %>
+                        <p class="status-message error-message">
+                            <%= contactError %>
+                        </p>
+                    <% } %>
+
+                    <% if (
+                        typeof contactSuccess !== 'undefined'
+                        && contactSuccess
+                    ) { %>
+                        <p class="status-message success-message">
+                            <%= contactSuccess %>
+                        </p>
+                    <% } %>
+
+                    <label>
+                        Họ và tên
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Nhập họ và tên"
+                            required>
+                    </label>
+
+                    <label>
+                        Email
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Nhập email"
+                            required>
+                    </label>
+
+                    <label>
+                        Ý kiến liên hệ
+                        <textarea
+                            name="message"
+                            rows="5"
+                            placeholder="Nhập nội dung liên hệ"
+                            required></textarea>
+                    </label>
+
+                    <button type="submit" class="primary-btn">
+                        Gửi ý kiến
+                    </button>
+                </form>
+            </div>
+
+        </section>
+
+        <div class="footer-bottom">
+            <p>
+                © <%= new Date().getFullYear() %>
+                Tài liệu Skibidi. All rights reserved.
+            </p>
+        </div>
+
+    </div>
+</footer>

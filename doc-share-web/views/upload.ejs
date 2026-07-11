@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tài liệu</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Đăng tài liệu</p>
+                <h1>Thêm tài liệu mới vào hệ thống</h1>
+                <p class="hero-copy">Hỗ trợ tải lên tệp PDF, DOCX, PPTX hoặc lưu link Google Drive.</p>
+            </div>
+        </section>
+
+        <form action="/upload" method="POST" class="upload-form" id="uploadForm">
+            <% if (error) { %>
+                <p class="status-message error-message"><%= error %></p>
+            <% } %>
+
+            <% if (success) { %>
+                <p class="status-message success-message"><%= success %></p>
+            <% } %>
+
+        <div class="form-grid">
+            <label>
+                Danh mục
+                <select
+                    name="categoryId"
+                    id="categorySelect"
+                    required>
+                    <option value="">Chọn danh mục</option>
+
+                    <% categories.forEach(category => { %>
+                        <option
+                            value="<%= category.id %>"
+                            <%= formData.categoryId === category.id ? 'selected' : '' %>>
+                            <%= category.title %>
+                        </option>
+                    <% }) %>
+                </select>
+            </label>
+
+            <label>
+                Môn học / đầu mục
+                <select
+                    name="subject"
+                    id="subjectSelect"
+                    data-selected-subject="<%= formData.subject || '' %>"
+                    required
+                    disabled>
+                    <option value="">Hãy chọn danh mục</option>
+                </select>
+            </label>
+
+            <label>
+                Tiêu đề tài liệu
+                <input
+                    type="text"
+                    name="title"
+                    value="<%= formData.title || '' %>"
+                    required>
+            </label>
+
+            <div>
+                <label style="margin-bottom: 0;">
+                    Chọn tệp
+                    <input
+                        type="file"
+                        id="documentFile"
+                        accept=".pdf,.docx,.pptx">
+                </label>
+                <div id="filePreviewContainer" style="display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #fff4ee; border: 1px solid var(--line); border-radius: 12px; margin-top: 8px;">
+                    <span id="fileInfoText" style="font-size: 14px; color: var(--ink); font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;"></span>
+                    <button type="button" id="clearFileBtn" class="secondary-btn" style="padding: 6px 12px; font-size: 13px; margin: 0; min-width: auto; height: auto; line-height: 1; border-color: #ef4444; color: #ef4444; background: transparent;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='transparent'">Xóa tệp</button>
+                </div>
+            </div>
+        </div>
+
+            <label>
+                Link Google Drive
+                <input type="url" name="driveLink" id="driveLink" placeholder="https://drive.google.com/..." value="<%= formData.driveLink || '' %>">
+            </label>
+
+            <label>
+                Mô tả ngắn
+                <textarea name="description" rows="3" required><%= formData.description || '' %></textarea>
+            </label>
+
+            <label>
+                Nội dung tài liệu
+                <textarea name="content" rows="8" required><%= formData.content || '' %></textarea>
+            </label>
+
+            <input type="hidden" name="fileName" id="fileName" value="<%= formData.fileName || '' %>">
+            <input type="hidden" name="mimeType" id="mimeType" value="<%= formData.mimeType || '' %>">
+            <input type="hidden" name="fileData" id="fileData" value="<%= formData.fileData || '' %>">
+
+            <p class="helper-text">Hỗ trợ tệp tải lên tối đa 100MB và/hoặc link Google Drive công khai.</p>
+            <button type="submit" class="primary-btn">Tải tài liệu lên</button>
+        </form>
+    </main>
+
+    <script>
+        window.categoryData = <%- JSON.stringify(categories) %>;
+    </script>
+
+    <%- include('./partials/footer') %>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/upload.js"></script>
+</body>
+</html>

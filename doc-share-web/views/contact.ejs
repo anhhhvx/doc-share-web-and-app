@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu & Liên hệ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/contact.css">
+</head>
+
+<body>
+    <%- include('./partials/navbar') %>
+
+        <main class="container">
+            <section class="page-hero">
+                <p class="eyebrow">Liên hệ</p>
+                <h1>Giới thiệu & Liên hệ</h1>
+                <p class="page-description">Kết nối với chúng tôi để đóng góp ý kiến hoặc nhận hỗ trợ về tài liệu học
+                    tập.</p>
+            </section>
+
+            <section class="info-contact-section">
+                <article class="info-panel">
+                    <p class="eyebrow">Giới thiệu</p>
+                    <h2>
+                        <%= homeContent.aboutTitle %>
+                    </h2>
+                    <p>
+                        <%= homeContent.aboutText %>
+                    </p>
+                </article>
+
+                <article class="contact-panel">
+                    <div class="contact-copy">
+                        <p class="eyebrow">Liên hệ</p>
+                        <h2>
+                            <%= homeContent.contactTitle %>
+                        </h2>
+                        <p>
+                            <%= homeContent.contactText %>
+                        </p>
+                        <div class="contact-list">
+                            <p>Email: <strong>
+                                    <%= homeContent.contactEmail %>
+                                </strong></p>
+                            <p>Điện thoại: <strong>
+                                    <%= homeContent.contactPhone %>
+                                </strong></p>
+                            <p>Địa chỉ: <strong>
+                                    <%= homeContent.contactAddress %>
+                                </strong></p>
+                        </div>
+                    </div>
+
+                    <form action="/contact" method="POST" class="contact-form">
+                        <% if (contactError) { %>
+                            <p class="status-message error-message">
+                                <%= contactError %>
+                            </p>
+                            <% } %>
+
+                                <% if (contactSuccess) { %>
+                                    <p class="status-message success-message">
+                                        <%= contactSuccess %>
+                                    </p>
+                                    <% } %>
+
+                                        <label>
+                                            Họ và tên
+                                            <input type="text" name="name" required>
+                                        </label>
+
+                                        <label>
+                                            Email
+                                            <input type="email" name="email" required>
+                                        </label>
+
+                                        <label>
+                                            Ý kiến liên hệ
+                                            <textarea name="message" rows="5" required></textarea>
+                                        </label>
+
+                                        <button type="submit" class="primary-btn">Gửi ý kiến</button>
+                    </form>
+                </article>
+            </section>
+        </main>
+
+        <script src="/js/navbar.js"></script>
+</body>
+
+</html>

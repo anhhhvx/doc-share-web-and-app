@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= documentItem.title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/comment.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="detail-layout">
+            <article class="detail-main">
+                <p class="eyebrow"><%= documentItem.categoryName %></p>
+                <h1><%= documentItem.title %></h1>
+                <p class="document-subject"><%= documentItem.subject %></p>
+                <p class="detail-description"><%= documentItem.description %></p>
+
+                <section class="detail-section">
+                    <h2>Nội dung tài liệu</h2>
+                    <% if (canAccessFullContent) { %>
+                        <p><%= documentItem.content %></p>
+                    <% } else { %>
+                        <p class="locked-content">Khách chưa đăng nhập chỉ xem được tổng quan tài liệu. Vui lòng đăng nhập để xem đầy đủ nội dung và tải tài liệu.</p>
+                        <a href="/login" class="primary-btn">Đăng nhập để xem đầy đủ</a>
+                    <% } %>
+                </section>
+            </article>
+
+            <aside class="detail-sidebar">
+                <div class="info-box">
+                    <h3>Thông tin tài liệu</h3>
+                    <p>Nguồn: 
+                        <% if (documentItem.sourceType === 'both') { %>
+                            Tệp & Google Drive
+                        <% } else if (documentItem.sourceType === 'google-drive') { %>
+                            Google Drive
+                        <% } else { %>
+                            Tệp tải lên
+                        <% } %>
+                    </p>
+                    <% if (documentItem.originalFileName) { %>
+                        <p>Tên tệp: <%= documentItem.originalFileName %></p>
+                    <% } %>
+                    <p>Người đăng: <%= documentItem.uploader %></p>
+                    <p>Ngày đăng: <%= new Date(documentItem.createdAt).toLocaleDateString('vi-VN') %></p>
+                    <p>Lượt xem: <%= documentItem.viewCount || 0 %></p>
+                    <p>Điểm trung bình: <%= ratingAverage.toFixed(1) %> / 5</p>
+                    <p>Số đánh giá: <%= ratingCount %></p>
+                </div>
+
+                <% if (canAccessFullContent) { %>
+                    <% if (documentItem.storedFileName) { %>
+                        <a href="/download/<%= documentItem.id %>" class="primary-btn full-width" style="margin-bottom: 8px;">Tải tệp xuống</a>
+                    <% } %>
+                    <% if (documentItem.driveLink) { %>
+                        <a href="<%= documentItem.driveLink %>" target="_blank" class="secondary-btn full-width">Mở Link Google Drive</a>
+                    <% } %>
+                <% } else { %>
+                    <a href="/login" class="secondary-btn full-width">Đăng nhập để tải</a>
+                <% } %>
+            </aside>
+        </section>
+
+        <section class="comments-section" id="comments">
+
+            <div class="comments-header">
+                <div>
+                    <p class="eyebrow">Bình luận và đánh giá</p>
+                    <h2>Ý kiến người dùng</h2>
+                </div>
+
+                <div class="comments-summary">
+                    <span class="summary-score">
+                        <%= ratingAverage.toFixed(1) %>
+                    </span>
+
+                    <div>
+                        <div class="summary-stars">
+                            <% for (let star = 1; star <= 5; star += 1) { %>
+                                <span class="<%= star <= Math.round(ratingAverage) ? 'active' : '' %>">
+                                    ★
+                                </span>
+                            <% } %>
+                        </div>
+
+                        <span class="summary-count">
+                            <%= ratingCount %> lượt đánh giá
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comments-layout">
+
+                <div class="comment-form-column">
+                    <form
+                        action="/documents/<%= documentItem.id %>/comments"
+                        method="POST"
+                        class="comment-form">
+
+                        <% if (commentError) { %>
+                            <p class="status-message error-message">
+                                <%= commentError %>
+                            </p>
+                        <% } %>
+
+                        <div class="rating-field">
+                            <p class="rating-title">
+                                Đánh giá tài liệu
+                            </p>
+
+                            <div class="star-rating" aria-label="Chọn điểm đánh giá">
+
+                                <% for (let rating = 5; rating >= 1; rating -= 1) { %>
+                                    <input
+                                        type="radio"
+                                        id="rating-<%= rating %>"
+                                        name="rating"
+                                        value="<%= rating %>"
+                                        <%= String(commentForm.rating || '') === String(rating)
+                                            ? 'checked'
+                                            : '' %>
+                                        required>
+
+                                    <label
+                                        for="rating-<%= rating %>"
+                                        title="<%= rating %> sao"
+                                        aria-label="<%= rating %> sao">
+                                        ★
+                                    </label>
+                                <% } %>
+
+                            </div>
+
+                            <p class="rating-helper">
+                                Nhấn vào số sao bạn muốn đánh giá.
+                            </p>
+                        </div>
+
+                        <% if (user) { %>
+
+                            <div class="comment-identity">
+                                <strong>
+                                    <%= user.fullName || user.username %>
+                                </strong>
+
+                                <span>
+                                    Thông tin tài khoản của bạn sẽ được dùng cho bình luận.
+                                </span>
+                            </div>
+
+                        <% } else { %>
+
+                            <label class="comment-field">
+                                <span>Tên người dùng</span>
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value="<%= commentForm.name || '' %>"
+                                    placeholder="Nhập tên của bạn"
+                                    required>
+                            </label>
+
+                            <label class="comment-field">
+                                <span>Email</span>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value="<%= commentForm.email || '' %>"
+                                    placeholder="Nhập email"
+                                    required>
+                            </label>
+
+                        <% } %>
+
+                        <label class="comment-field">
+                            <span>Nội dung bình luận</span>
+
+                            <textarea
+                                name="content"
+                                rows="6"
+                                placeholder="Chia sẻ cảm nhận của bạn về tài liệu..."
+                                required><%= commentForm.content || '' %></textarea>
+                        </label>
+
+                        <button type="submit" class="primary-btn comment-submit-btn">
+                            Gửi đánh giá
+                        </button>
+
+                    </form>
+                </div>
+
+                <div class="comment-list-column">
+
+                    <div class="comment-list-header">
+                        <h3>
+                            Bình luận
+                        </h3>
+
+                        <span>
+                            <%= comments.length %> bình luận
+                        </span>
+                    </div>
+
+                    <div class="comment-list">
+
+                        <% if (comments.length === 0) { %>
+
+                            <article class="comment-empty-state">
+                                <div class="comment-empty-icon">
+                                    ★
+                                </div>
+
+                                <h3>Chưa có bình luận nào</h3>
+
+                                <p>
+                                    Hãy trở thành người đầu tiên đánh giá tài liệu này.
+                                </p>
+                            </article>
+
+                        <% } %>
+
+                        <% comments.forEach(comment => { %>
+
+                            <article class="comment-card">
+
+                                <div class="comment-head">
+
+                                    <div class="comment-user">
+                                        <div class="comment-avatar">
+                                            <%= comment.name
+                                                ? comment.name.charAt(0).toUpperCase()
+                                                : 'U' %>
+                                        </div>
+
+                                        <div>
+                                            <h3><%= comment.name %></h3>
+
+                                            <span class="comment-date">
+                                                <%= new Date(comment.createdAt)
+                                                    .toLocaleString('vi-VN') %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="comment-stars"
+                                        aria-label="<%= comment.rating %> trên 5 sao">
+
+                                        <% for (let star = 1; star <= 5; star += 1) { %>
+                                            <span class="<%= star <= comment.rating ? 'active' : '' %>">
+                                                ★
+                                            </span>
+                                        <% } %>
+
+                                    </div>
+
+                                </div>
+
+                                <p class="comment-content"><%= comment.content %></p>
+
+                            </article>
+
+                        <% }) %>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <%- include('./partials/footer') %>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

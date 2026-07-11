@@ -1,0 +1,113 @@
+<nav class="navbar">
+
+    <div class="nav-left">
+        <button id="menuBtn" class="hamburger">
+            ☰
+        </button>
+    </div>
+
+    <a href="/" class="logo">
+        Tài liệu Skibidi
+    </a>
+
+    <div class="nav-right">
+
+        <button id="searchBtn" class="icon-btn">
+            🔍
+        </button>
+
+        <div id="searchPopup" class="search-popup">
+            <form action="/documents" method="GET">
+                <input
+                    id="searchInput"
+                    type="text"
+                    name="q"
+                    placeholder="Tìm kiếm tài liệu...">
+            </form>
+        </div>
+
+        <% if (locals.user) { %>
+
+            <div class="user-menu">
+
+                <button id="userBtn" class="login-btn" type="button">
+                    <%= locals.user.username %>
+                </button>
+
+                <div id="userPopup" class="user-popup">
+                    <% if (locals.user.role === 'admin') { %>
+                        <a href="/admin">
+                            Quản trị
+                        </a>
+                    <% } %>
+                    <a href="/logout">
+                        Đăng xuất
+                    </a>
+                </div>
+
+            </div>
+
+        <% } else { %>
+
+            <a href="/login" class="login-btn">
+                Đăng nhập
+            </a>
+
+        <% } %>
+
+    </div>
+
+    <div class="sidebar-overlay"></div>
+
+    <aside class="sidebar">
+
+        <div class="sidebar-search">
+            <form action="/documents" method="GET">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Tìm kiếm tài liệu...">
+            </form>
+        </div>
+
+        <% if (locals.user && locals.user.role === 'admin') { %>
+            <a href="/admin" class="sidebar-link sidebar-all-docs">
+                Trang quản trị
+            </a>
+        <% } %>
+
+        <a href="/documents" class="sidebar-link sidebar-all-docs">
+            Tất cả tài liệu
+        </a>
+
+        <% if (locals.categories) { %>
+            <% locals.categories.forEach(category => { %>
+                <div class="menu-group">
+                    <button class="dropdown-btn">
+                        <%= category.title %>
+                        <span>▼</span>
+                    </button>
+                    <div class="submenu">
+                        <% category.subjects.forEach(subject => { %>
+                            <a href="/documents?category=<%= category.id %>&q=<%= encodeURIComponent(subject) %>">
+                                <%= subject %>
+                            </a>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <% if (locals.user) { %>
+            <a href="/upload" class="sidebar-link">
+                Đăng tài liệu
+            </a>
+        <% } %>
+
+        <a href="/contact" class="sidebar-link">
+            Liên hệ
+        </a>
+
+    </aside>
+
+</nav>

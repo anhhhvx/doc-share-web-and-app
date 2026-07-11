@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="page-hero compact-hero">
+            <div>
+                <p class="eyebrow">Admin Dashboard</p>
+                <h1>Quản trị website chia sẻ tài liệu</h1>
+                <p class="hero-copy">Theo dõi lượt xem, quản lý tài khoản, nội dung, tài liệu, bình luận và ý kiến liên hệ từ người dùng.</p>
+            </div>
+        </section>
+
+        <section class="admin-stats">
+            <article class="stat-card">
+                <p>Tổng lượt xem website</p>
+                <h2><%= siteData.stats.totalViews %></h2>
+                <small>Lưu trữ trong MongoDB</small>
+            </article>
+            <article class="stat-card">
+                <p>Tài liệu</p>
+                <h2><%= documentItems.length %></h2>
+            </article>
+            <article class="stat-card">
+                <p>Bình luận</p>
+                <h2><%= comments.length %></h2>
+            </article>
+            <article class="stat-card">
+                <p>Liên hệ</p>
+                <h2><%= contacts.length %></h2>
+            </article>
+        </section>
+
+        <section class="admin-links">
+            <a href="/admin/content" class="primary-btn">Cập nhật nội dung trang</a>
+            <a href="/admin/users" class="secondary-btn">Quản lý tài khoản</a>
+            <a href="/admin/documents" class="secondary-btn">Quản lý tài liệu</a>
+            <a href="/admin/comments" class="secondary-btn">Quản lý bình luận</a>
+            <a href="/admin/contacts" class="secondary-btn">Ý kiến liên hệ</a>
+        </section>
+
+        <section class="admin-panel">
+            <div class="section-header">
+                <div>
+                    <p class="eyebrow">Tài liệu gần nhất</p>
+                    <h2>Tài liệu đang có</h2>
+                </div>
+            </div>
+
+            <div class="table-like">
+                <% documentItems.forEach(item => { %>
+                    <article class="admin-row">
+                        <div>
+                            <strong><%= item.title %></strong>
+                            <p><%= item.categoryName %> • <%= item.subject %></p>
+                        </div>
+                        <span><%= item.viewCount || 0 %> lượt xem</span>
+                    </article>
+                <% }) %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>

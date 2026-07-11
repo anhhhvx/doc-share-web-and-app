@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <main class="container">
+        <section class="empty-state">
+            <h1>Thông báo</h1>
+            <p><%= message %></p>
+            <a href="/" class="primary-btn">Về trang chủ</a>
+        </section>
+    </main>
+
+    <%- include('./partials/footer') %>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>
