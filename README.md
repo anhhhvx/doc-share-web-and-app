@@ -43,6 +43,12 @@ git clone https://github.com/anhhhvx/doc-share-web-and-app.git
 cd doc-share-web-and-app
 ```
 
+### Sample Data (optional)
+
+Prepared MongoDB data and sample uploaded files are available in the [`sample-data`](sample-data/) folder.
+
+See the [sample data instructions](sample-data/README.md) for database restoration and usage. Restoring the sample database is optional because the project automatically initializes the basic data when it runs for the first time.
+
 ### Run the Website
 
 ```bash
