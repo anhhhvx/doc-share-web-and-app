@@ -136,9 +136,9 @@ export default function DetailScreen({ route, navigation, userSession }) {
                     <Text style={styles.docSubject}>{docData.subject}</Text>
 
                     <View style={styles.metaRow}>
-                        <Text style={styles.metaText}>👤 {docData.uploader}</Text>
+                        <Text style={styles.metaText}>{docData.uploader}</Text>
                         <Text style={styles.metaText}>👁 {docData.viewCount || 0} lượt xem</Text>
-                        <Text style={styles.metaText}>📅 {new Date(docData.createdAt).toLocaleDateString('vi-VN')}</Text>
+                        <Text style={styles.metaText}>{new Date(docData.createdAt).toLocaleDateString('vi-VN')}</Text>
                     </View>
                 </View>
 

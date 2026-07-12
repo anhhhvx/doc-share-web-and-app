@@ -77,28 +77,12 @@ export default function App() {
                 <Tab.Navigator
                     screenOptions={({ route }) => ({
                         headerShown: false,
-                        tabBarIcon: ({ focused }) => {
-                            let icon = '';
-                            if (route.name === 'Documents') {
-                                icon = '📚';
-                            } else if (route.name === 'Contact') {
-                                icon = '📞';
-                            } else if (route.name === 'Account') {
-                                icon = '👤';
-                            }
-                            return (
-                                <Text style={[
-                                    styles.tabIcon,
-                                    { opacity: focused ? 1 : 0.4 }
-                                ]}>
-                                    {icon}
-                                </Text>
-                            );
-                        },
                         tabBarActiveTintColor: '#ff6e6c',
                         tabBarInactiveTintColor: '#67568c',
                         tabBarLabelStyle: styles.tabLabel,
-                        tabBarStyle: styles.tabBar
+                        tabBarStyle: styles.tabBar,
+                        tabBarIcon: () => null,
+                        tabBarLabelPosition: 'beside-icon'
                     })}
                 >
                     {/* Tab 1: Tài liệu (chứa lồng ghép Stack Navigator) */}
@@ -144,19 +128,15 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     tabBar: {
-        height: 64,
+        height: 52,
         borderTopWidth: 2,
         borderColor: '#e4d9f7',
         backgroundColor: '#ffffff',
-        paddingBottom: Platform.OS === 'ios' ? 8 : 10,
-        paddingTop: 8,
-    },
-    tabIcon: {
-        fontSize: 20,
+        paddingBottom: Platform.OS === 'ios' ? 14 : 0,
+        justifyContent: 'center',
     },
     tabLabel: {
-        fontSize: 11,
+        fontSize: 13,
         fontWeight: 'bold',
-        marginTop: 2,
     }
 });
