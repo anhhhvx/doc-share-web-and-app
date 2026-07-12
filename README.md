@@ -34,7 +34,7 @@ The main website and mobile requirements are completed and connected to MongoDB.
 - [Git](https://git-scm.com/install/) for cloning the repository.
 - [Node.js](https://nodejs.org/en/download) for running the website and mobile project. npm is included with Node.js.
 - [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database.
-- Expo Go or an Android/iOS emulator
+- Expo Go or an Android/iOS emulator (ver 54)
 
 ### Clone Repository
 
@@ -84,7 +84,7 @@ npx expo start
 
 If the app cannot connect to the server, try switching the Windows network profile between Private and Public.
 
-3. Open the app with Expo Go or an emulator. 
+3. Open the app with Expo Go or an emulator through the QR code. 
 
 ### Note
 
