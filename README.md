@@ -96,4 +96,4 @@ If the app cannot connect to the server, try switching the Windows network profi
 
 The application was tested using Expo Go on both Android and iOS:
 - Android: The laptop was connected to the phone's Personal Hotspot, and the Windows network profile was set to Private.
-- iOS: A Personal Hotspot was also used for a more stable connection, but the Windows network profile on the laptop was set to Public.
+- iOS: We suscessfully tested with both Personal Hotspot and Normal Wifi, but the Windows network profile on the laptop need to be set to Public.
