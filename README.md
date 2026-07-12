@@ -34,6 +34,13 @@ The main website and mobile requirements are completed and connected to MongoDB.
 - MongoDB Community Server
 - Expo Go or an Android/iOS emulator
 
+### Clone Repository
+
+```bash
+git clone https://github.com/anhhhvx/doc-share-web-and-app.git
+cd doc-share-web-and-ap
+```
+
 ### Run the Website
 
 ```bash
