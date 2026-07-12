@@ -30,15 +30,17 @@ The main website and mobile requirements are completed and connected to MongoDB.
 ## 4. Installation and Usage
 
 ### Requirements
-- Node.js
-- MongoDB Community Server
+
+- [Git](https://git-scm.com/install/) for cloning the repository.
+- [Node.js](https://nodejs.org/en/download) for running the website and mobile project. npm is included with Node.js.
+- [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database.
 - Expo Go or an Android/iOS emulator
 
 ### Clone Repository
 
 ```bash
 git clone https://github.com/anhhhvx/doc-share-web-and-app.git
-cd doc-share-web-and-ap
+cd doc-share-web-and-app
 ```
 
 ### Run the Website
